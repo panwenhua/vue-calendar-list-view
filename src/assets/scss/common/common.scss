@@ -1,0 +1,49 @@
+@charset "utf-8";
+@import "reset";
+@import "../modal";
+@mixin full {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+@mixin place($pos) {
+    position: $pos;
+}
+@mixin radius($W) {
+    border-radius: $W;
+}
+html,
+body {
+    @include full;
+}
+html {
+    -ms-touch-action: none;
+}
+body {
+    background: #f4f4f4;
+}
+#app {
+    @include full;
+    &> div {
+        @include full;
+        display: box;
+        display: -webkit-box;
+        display: -moz-box;
+        box-orient: vertical;
+        -moz-box-orient: vertical;
+        -webkit-box-orient: vertical;
+    }
+}
+/*section*/
+section {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+}
+section::-webkit-scrollbar {
+    display: none;
+}
