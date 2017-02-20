@@ -21,7 +21,7 @@
 					<span class="select">请选择></span>
 				</router-link>
 			</ul>
-			<button class="submitPlan">提交出行订单</button>
+			<div class="buttons"><button class="submitPlan">提交出行订单</button></div>
 			<p class="tips2">说明：只有出行日期可点</p>
 		</section>
 		<div class="calendar" :style="{display: calendar.open?'block':'none'}" style="position: fixed; z-index: 999; bottom: 0px;">
@@ -50,10 +50,10 @@
 						}, {
 							"reTravelDate": "2017-01-01",
 							"availableAmount": 13
-						},{
+						}, {
 							"reTravelDate": "2017-01-02",
 							"availableAmount": 13
-						},{
+						}, {
 							"reTravelDate": "2017-01-03",
 							"availableAmount": 13
 						}, {
@@ -67,13 +67,13 @@
 				}
 			},
 			computed: {
-				getCardNum: function() {
+				getCardNum() {
 					return this.cardNum != null && this.cardNum + '张';
 				},
-				getPepoleNum: function() {
+				getPepoleNum() {
 					return this.pepoleNum != null && this.pepoleNum + '人';
 				},
-				getCurrentDate: function() {
+				getCurrentDate() {
 					let d = this.currentDate;
 					if(d) {
 						return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
@@ -83,31 +83,30 @@
 					}
 				}
 			},
-			created: function() {},
 			methods: {
-				clickRight: function() {
+				clickRight() {
 					alert("历史订单")
 				},
-				openCalendar: function() {
+				openCalendar() {
 					this.getCalendarAndMum();
 					this.calendar.open = true;
 				},
-				closeCalendar: function() {
+				closeCalendar() {
 					this.calendar.open = false;
 				},
-				formatDate: function(year, month, day) {
-					var y = year;
-					var m = month;
+				formatDate(year, month, day) {
+					let y = year;
+					let m = month;
 					if(m < 10) m = "0" + m;
-					var d = day;
+					let d = day;
 					if(d < 10) d = "0" + d;
 					return y + "-" + m + "-" + d
 				},
-				setCurrentDate: function(d) {
+				setCurrentDate(d) {
 					this.currentDate = d;
 					this.closeCalendar();
 				},
-				getCalendarAndMum: function() {
+				getCalendarAndMum() {
 					//此处可以ajax 获取数据
 					let me = this;
 				}
@@ -119,6 +118,10 @@
 	}
 </script>
 <style lang="sass" scoped>
+	.buttons {
+		display: flex;
+		justify-content: center;
+	}
 	.calendar {
 		width: 100%;
 		height: 100%;
