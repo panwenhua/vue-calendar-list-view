@@ -1,5 +1,9 @@
 
-.calendar[data-v-3ab5f9fc] {
+.buttons[data-v-508b32e6] {
+  display: flex;
+  justify-content: center;
+}
+.calendar[data-v-508b32e6] {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -11,7 +15,7 @@
   -moz-box-orient: vertical;
   -webkit-box-orient: vertical;
 }
-.calendar .calendaWrap[data-v-3ab5f9fc] {
+.calendar .calendaWrap[data-v-508b32e6] {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
@@ -20,71 +24,71 @@
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
 }
-section[data-v-3ab5f9fc] {
+section[data-v-508b32e6] {
   background: white;
 }
-section ul[data-v-3ab5f9fc] {
+section ul[data-v-508b32e6] {
   padding: 0 0.30769231rem;
 }
-section ul li[data-v-3ab5f9fc] {
+section ul li[data-v-508b32e6] {
   position: relative;
   height: 1.38461538rem;
   line-height: 1.38461538rem;
   border-bottom: 1px solid #DDDDDD;
 }
-section ul li .item[data-v-3ab5f9fc] {
+section ul li .item[data-v-508b32e6] {
   color: #999999;
 }
-[data-dpr="1"] section ul li .item[data-v-3ab5f9fc] {
+[data-dpr="1"] section ul li .item[data-v-508b32e6] {
   font-size: 14px;
 }
-[data-dpr="2"] section ul li .item[data-v-3ab5f9fc] {
+[data-dpr="2"] section ul li .item[data-v-508b32e6] {
   font-size: 28px;
 }
-[data-dpr="3"] section ul li .item[data-v-3ab5f9fc] {
+[data-dpr="3"] section ul li .item[data-v-508b32e6] {
   font-size: 42px;
 }
-section ul li .result[data-v-3ab5f9fc] {
+section ul li .result[data-v-508b32e6] {
   margin-left: 0.87692308rem;
   color: #333333;
 }
-[data-dpr="1"] section ul li .result[data-v-3ab5f9fc] {
+[data-dpr="1"] section ul li .result[data-v-508b32e6] {
   font-size: 12px;
 }
-[data-dpr="2"] section ul li .result[data-v-3ab5f9fc] {
+[data-dpr="2"] section ul li .result[data-v-508b32e6] {
   font-size: 24px;
 }
-[data-dpr="3"] section ul li .result[data-v-3ab5f9fc] {
+[data-dpr="3"] section ul li .result[data-v-508b32e6] {
   font-size: 36px;
 }
-section ul li .select[data-v-3ab5f9fc] {
+section ul li .select[data-v-508b32e6] {
   position: absolute;
   right: 0;
   color: #C4C4C4;
 }
-[data-dpr="1"] section ul li .select[data-v-3ab5f9fc] {
+[data-dpr="1"] section ul li .select[data-v-508b32e6] {
   font-size: 12px;
 }
-[data-dpr="2"] section ul li .select[data-v-3ab5f9fc] {
+[data-dpr="2"] section ul li .select[data-v-508b32e6] {
   font-size: 24px;
 }
-[data-dpr="3"] section ul li .select[data-v-3ab5f9fc] {
+[data-dpr="3"] section ul li .select[data-v-508b32e6] {
   font-size: 36px;
 }
-section .tips[data-v-3ab5f9fc] {
+section .tips[data-v-508b32e6] {
   padding: 0.30769231rem;
   color: #999999;
 }
-[data-dpr="1"] section .tips[data-v-3ab5f9fc] {
+[data-dpr="1"] section .tips[data-v-508b32e6] {
   font-size: 10px;
 }
-[data-dpr="2"] section .tips[data-v-3ab5f9fc] {
+[data-dpr="2"] section .tips[data-v-508b32e6] {
   font-size: 20px;
 }
-[data-dpr="3"] section .tips[data-v-3ab5f9fc] {
+[data-dpr="3"] section .tips[data-v-508b32e6] {
   font-size: 30px;
 }
-section .submitPlan[data-v-3ab5f9fc] {
+section .submitPlan[data-v-508b32e6] {
   margin: 1.15384615rem 0.92307692rem 0.30769231rem 0.92307692rem;
   width: 8rem;
   height: 1.35384615rem;
@@ -93,101 +97,101 @@ section .submitPlan[data-v-3ab5f9fc] {
   color: #FFFFFF;
   letter-spacing: 0;
 }
-[data-dpr="1"] section .submitPlan[data-v-3ab5f9fc] {
+[data-dpr="1"] section .submitPlan[data-v-508b32e6] {
   font-size: 16px;
 }
-[data-dpr="2"] section .submitPlan[data-v-3ab5f9fc] {
+[data-dpr="2"] section .submitPlan[data-v-508b32e6] {
   font-size: 32px;
 }
-[data-dpr="3"] section .submitPlan[data-v-3ab5f9fc] {
+[data-dpr="3"] section .submitPlan[data-v-508b32e6] {
   font-size: 48px;
 }
-section .tips2[data-v-3ab5f9fc] {
+section .tips2[data-v-508b32e6] {
   padding: 0 0.92307692rem;
   color: #999999;
   letter-spacing: 0;
 }
-[data-dpr="1"] section .tips2[data-v-3ab5f9fc] {
+[data-dpr="1"] section .tips2[data-v-508b32e6] {
   font-size: 9px;
 }
-[data-dpr="2"] section .tips2[data-v-3ab5f9fc] {
+[data-dpr="2"] section .tips2[data-v-508b32e6] {
   font-size: 18px;
 }
-[data-dpr="3"] section .tips2[data-v-3ab5f9fc] {
+[data-dpr="3"] section .tips2[data-v-508b32e6] {
   font-size: 27px;
 }/*@import url("../assets/iconfonts/iconfont.css");*/
 
 /*header*/
-.rightButton[data-v-4a61beab] {
+.rightButton[data-v-b385627c] {
   position: absolute;
   right: 0.30769231rem;
   top: 0;
   color: #666666;
   letter-spacing: 0;
 }
-[data-dpr="1"] .rightButton[data-v-4a61beab] {
+[data-dpr="1"] .rightButton[data-v-b385627c] {
   font-size: 13px;
 }
-[data-dpr="2"] .rightButton[data-v-4a61beab] {
+[data-dpr="2"] .rightButton[data-v-b385627c] {
   font-size: 26px;
 }
-[data-dpr="3"] .rightButton[data-v-4a61beab] {
+[data-dpr="3"] .rightButton[data-v-b385627c] {
   font-size: 39px;
 }
-.black[data-v-4a61beab] {
+.black[data-v-b385627c] {
   background: #F9F8F8;
   box-shadow: 0 0.01538462rem 0 0 #959595;
 }
-.white[data-v-4a61beab] {
+.white[data-v-b385627c] {
   color: #FFFFFF;
 }
-header[data-v-4a61beab] {
+header[data-v-b385627c] {
   height: 1.35384615rem;
   line-height: 1.35384615rem;
 }
-[data-dpr="1"] header[data-v-4a61beab] {
+[data-dpr="1"] header[data-v-b385627c] {
   font-size: 18px;
 }
-[data-dpr="2"] header[data-v-4a61beab] {
+[data-dpr="2"] header[data-v-b385627c] {
   font-size: 36px;
 }
-[data-dpr="3"] header[data-v-4a61beab] {
+[data-dpr="3"] header[data-v-b385627c] {
   font-size: 54px;
 }
-header a[data-v-4a61beab]:nth-of-type(1) {
+header a[data-v-b385627c]:nth-of-type(1) {
   width: 0.30769231rem;
   height: 0.52307692rem;
   position: absolute;
   left: 0.30769231rem;
   top: 0.41538462rem;
 }
-header a:nth-of-type(1).back[data-v-4a61beab] {
+header a:nth-of-type(1).back[data-v-b385627c] {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAA+CAYAAABDTbllAAAAAXNSR0IArs4c6QAAA15JREFUaAXN2Mlu00AYB/DGSQjn5EDZBALEcuIVEnoABKKBVkFwQcoeiRsHHiV7RA8VKLS0gBrEqXkBLnAAxHJhl0rOLFn4fzROHdupZ+zxOCO59iye+Xm+sWN3ZmbKks8LT7FYPIpxb0cikbuJRKKnNSjajIzjIaaNse50Op2lZrPp144rdYY0mCMqwufzLYfD4VvqTEkDmWHMUFJAu2H0KNdBLBgN6p6ri5oHA1QX24ZrM8SLweK+kc/nV1wB2cVQ6ISDnGCEg5xihIJEYISBRGGEgERiHINEYxyB3MDYBrmFsQVyE8MNchvDBZKBYQbJwjCBZGIsQbIxu4K8wEwEeYUxBXmJMYC8xoyBpgEzAk0L5j9omjAEUvD5cRb7g5RhSFt+v/8FQzvbTRR8Cz2mbyL0QB9qVmm21+u1G43GMauGdutHn0GlUmlxMBjcR0cBhs4+hUKhaDKZ/MjQlqvJCERnVSqVBczAAxx6hhoD2UEpihLL5XIf6FwRyfDPhmw2u4o1dR3bX4YBDiPM7XK5fJyhLVMTA4jOwkJ/hIGYUGh3SCTKFESoQqGwxouq1Won6FwnybCG9J0hHHHAmtiC+jp9HmH+EggEoul0+r2+jjVvCaKOZKKYQITCc2oeu4esM4W2MazFd3QuT2IGUacyUFwgQuHheaXf76+wzBSaf8W6ivLM1MS7jAY3S3hOPcHDcBED/TGr15UdALyNizipK5+Y5QZRT4TCjhmFn6NNVpQtEKEQhqc8KISZaaZsg1QUwrfAEj6Ebj+h6vX6KTp3UuJe1GYdIRyXMdgqBt1jVq8tA/5bMBiMpVKpt9py9VgIiDrDw/MSQPQbaIlC8+/Dt4Q3KkTdOwqZ2gnt8Qqygau/hsPf2vIJx7OY0U1cxGl9vTAQdSwCJRREKNx9Ld6ZqlarZ+hcSsLW0HZ3O3+x0C/i+bOGktBOqfkRLuAHvmZimUzmtfAZUofEw/MZBrmKvOWawo2wr9vt0iuOzzUQwQiFq49bodBmC3fdTewHroWMQGrCW8IFXP068obwEQbbOdwQr6i9FBANhDV1Hrf6OmB7KU+JMAjrHNbOy+0SfEqrB27vEb7nCEsciF/DsX7qMVQuDUSDEQqgeWyfsY3NDNV7llqtlmEteYaxGvgf1vXLaz+25wMAAAAASUVORK5CYII=) no-repeat;
   background-size: 100% 100%;
 }
-header a:nth-of-type(1).backWhite[data-v-4a61beab] {
+header a:nth-of-type(1).backWhite[data-v-b385627c] {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAA+CAYAAABDTbllAAAAAXNSR0IArs4c6QAAAY1JREFUaAXtmEtOwzAQQAMsOAQbVP4L4Bb8/+2xuAObXocVF+APEt3zW4RnVEvViFFtyXEcMSON0rGmnpcXb5Kqsqiquq4XyUtyrnUfY5hbri6GZHtQDHdmPAw/f6MdKEb/BTNmymxqCkxeqEAYD3XV6CGPhPmmf9AYkMFoas2MmdEMaOt2ZsyMZkBbtzNjZjQD2rqdGTOjGdDW7cyYGc2Atl7UmQFyltwmFzRgsT6ivhZr6UssDUj3ohYSdzT10lOIHRkSA3WfC6rPoFBTxUItCdnpSyxdkF9kSDzQlAXqnEGdh1pO/7zEjlg6izD1SO//hTqNNLUiZKcvASoS6iTC1BO9WUw5qE8yJBzUavrnJXZkyDHZaajnXKaOIkw5qDUhO33JkCKhDiNMvdC7nl6N2JEhDuqDDIlsUAfQdB5qQ8hOX2JpP8LUK73FQd0ANZNejdiRIXsBpt7o2RR/ba6cApUXxt8mULvkOzkZDmbL92S/MnwSatQqjL97IHZI9+rkvimUEcDMl0ESQPED8V1q2922dg4AAAAASUVORK5CYII=) no-repeat;
   background-size: 100% 100%;
 }
-header span[data-v-4a61beab] {
+header span[data-v-b385627c] {
   width: 100%;
   display: block;
   text-align: center;
 }
-.today[data-v-295fa548] {
+.today[data-v-82efd89a] {
   /*px*/
   height: 1.32307692rem;
   color: #FFFFFF;
   background: #37B7FA;
   border: 0.01538462rem solid #FFFFFF;
 }
-.calendar-list[data-v-295fa548] {
+.calendar-list[data-v-82efd89a] {
   background-color: #fff;
 }
-.calendar[data-v-295fa548] {
+.calendar[data-v-82efd89a] {
   padding-top: 0.27rem;
 }
-.week[data-v-295fa548] {
+.week[data-v-82efd89a] {
   position: fixed;
   z-index: 50;
   width: 100%;
@@ -196,49 +200,49 @@ header span[data-v-4a61beab] {
   flex-wrap: wrap;
   justify-content: space-around;
 }
-.week li[data-v-295fa548] {
+.week li[data-v-82efd89a] {
   text-align: center;
   height: 0.61538462rem;
   line-height: 0.61538462rem;
   vertical-align: middle;
   font-weight: medium;
 }
-[data-dpr="1"] .week li[data-v-295fa548] {
+[data-dpr="1"] .week li[data-v-82efd89a] {
   font-size: 12.85px;
 }
-[data-dpr="2"] .week li[data-v-295fa548] {
+[data-dpr="2"] .week li[data-v-82efd89a] {
   font-size: 25.7px;
 }
-[data-dpr="3"] .week li[data-v-295fa548] {
+[data-dpr="3"] .week li[data-v-82efd89a] {
   font-size: 38.55px;
 }
-.calendar-item[data-v-295fa548] {
+.calendar-item[data-v-82efd89a] {
   padding-bottom: 0.1rem;
 }
-.calendar-item[data-v-295fa548]:nth-of-type(1) {
+.calendar-item[data-v-82efd89a]:nth-of-type(1) {
   margin-top: 0.61538462rem;
 }
-.calendar-item .calendar-header[data-v-295fa548] {
+.calendar-item .calendar-header[data-v-82efd89a] {
   text-align: center;
   color: #333333;
   font-weight: medium;
   padding: 0.30769231rem 0 0.15384615rem 0;
 }
-[data-dpr="1"] .calendar-item .calendar-header[data-v-295fa548] {
+[data-dpr="1"] .calendar-item .calendar-header[data-v-82efd89a] {
   font-size: 14px;
 }
-[data-dpr="2"] .calendar-item .calendar-header[data-v-295fa548] {
+[data-dpr="2"] .calendar-item .calendar-header[data-v-82efd89a] {
   font-size: 28px;
 }
-[data-dpr="3"] .calendar-item .calendar-header[data-v-295fa548] {
+[data-dpr="3"] .calendar-item .calendar-header[data-v-82efd89a] {
   font-size: 42px;
 }
-.calendar-item .calendar-body ul[data-v-295fa548] {
+.calendar-item .calendar-body ul[data-v-82efd89a] {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
-.calendar-item .calendar-body ul li[data-v-295fa548] {
+.calendar-item .calendar-body ul li[data-v-82efd89a] {
   text-align: center;
   height: 1.32307692rem;
   vertical-align: middle;
@@ -249,43 +253,43 @@ header span[data-v-4a61beab] {
   background-color: #fff;
   position: relative;
 }
-.calendar-item .calendar-body ul li div[data-v-295fa548] {
+.calendar-item .calendar-body ul li div[data-v-82efd89a] {
   /*px*/
   height: 1.32307692rem;
 }
-.calendar-item .calendar-body ul li div span[data-v-295fa548] {
+.calendar-item .calendar-body ul li div span[data-v-82efd89a] {
   display: flex;
   justify-content: center;
   align-items: flex-end;
   height: 0.70769231rem;
   line-height: 0.60969231rem;
 }
-[data-dpr="1"] .calendar-item .calendar-body ul li div span[data-v-295fa548] {
+[data-dpr="1"] .calendar-item .calendar-body ul li div span[data-v-82efd89a] {
   font-size: 12.85px;
 }
-[data-dpr="2"] .calendar-item .calendar-body ul li div span[data-v-295fa548] {
+[data-dpr="2"] .calendar-item .calendar-body ul li div span[data-v-82efd89a] {
   font-size: 25.7px;
 }
-[data-dpr="3"] .calendar-item .calendar-body ul li div span[data-v-295fa548] {
+[data-dpr="3"] .calendar-item .calendar-body ul li div span[data-v-82efd89a] {
   font-size: 38.55px;
 }
-.calendar-item .calendar-body ul li div i[data-v-295fa548] {
+.calendar-item .calendar-body ul li div i[data-v-82efd89a] {
   display: block;
   height: 0.61538462rem;
   line-height: 0.38461538rem;
 }
-[data-dpr="1"] .calendar-item .calendar-body ul li div i[data-v-295fa548] {
+[data-dpr="1"] .calendar-item .calendar-body ul li div i[data-v-82efd89a] {
   font-size: 9px;
 }
-[data-dpr="2"] .calendar-item .calendar-body ul li div i[data-v-295fa548] {
+[data-dpr="2"] .calendar-item .calendar-body ul li div i[data-v-82efd89a] {
   font-size: 18px;
 }
-[data-dpr="3"] .calendar-item .calendar-body ul li div i[data-v-295fa548] {
+[data-dpr="3"] .calendar-item .calendar-body ul li div i[data-v-82efd89a] {
   font-size: 27px;
 }
-.calendar-item .calendar-body ul li div .nums[data-v-295fa548] {
+.calendar-item .calendar-body ul li div .nums[data-v-82efd89a] {
   color: #37B7FA;
 }
-.calendar-item .calendar-body ul span[class=disabled][data-v-295fa548] {
+.calendar-item .calendar-body ul span[class=disabled][data-v-82efd89a] {
   color: #CCCCCC;
 }
