@@ -4,6 +4,8 @@ var path = require("path");
 var exists = require("./utils/exists")({});
 var read = require("./utils/read")({});
 
+var cache = {};
+
 var find = function find(start, rel) {
   var file = path.join(start, rel);
 
@@ -19,6 +21,9 @@ var find = function find(start, rel) {
 
 module.exports = function (loc, rel) {
   rel = rel || ".babelrc";
-
-  return find(loc, rel);
+  var cacheKey = loc + "/" + rel;
+  if (!(cacheKey in cache)) {
+    cache[cacheKey] = find(loc, rel);
+  }
+  return cache[cacheKey];
 };

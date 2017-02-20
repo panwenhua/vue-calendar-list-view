@@ -36,9 +36,9 @@ exports.default = function (_ref) {
 
     visitor: {
       ReferencedIdentifier: function ReferencedIdentifier(path, state) {
-        var node = path.node;
-        var parent = path.parent;
-        var scope = path.scope;
+        var node = path.node,
+            parent = path.parent,
+            scope = path.scope;
 
 
         if (node.name === "regeneratorRuntime" && state.opts.regenerator !== false) {

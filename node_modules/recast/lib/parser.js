@@ -64,7 +64,7 @@ exports.parse = function parse(source, options) {
     // comments, wrap the original Program node with a File node.
     var file = program;
     if (file.type === "Program") {
-        var file = b.file(program);
+        var file = b.file(program, options.sourceFileName || null);
         file.loc = {
             lines: lines,
             indent: 0,
@@ -141,6 +141,11 @@ TCp.copy = function(node) {
     for (var i = 0; i < keyCount; ++i) {
         var key = keys[i];
         if (key === "loc") {
+            copy[key] = node[key];
+        } else if (key === "tokens" &&
+                   node.type === "File") {
+            // Preserve file.tokens (uncopied) in case client code cares
+            // about it, even though Recast ignores it when reprinting.
             copy[key] = node[key];
         } else {
             copy[key] = this.copy(node[key]);

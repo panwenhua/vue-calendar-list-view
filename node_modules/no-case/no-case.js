@@ -17,7 +17,7 @@ module.exports = function (str, locale, replacement) {
     return ''
   }
 
-  replacement = replacement || ' '
+  replacement = typeof replacement !== 'string' ? ' ' : replacement
 
   function replace (match, index, value) {
     if (index === 0 || index === (value.length - match.length)) {

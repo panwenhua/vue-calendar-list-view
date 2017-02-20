@@ -30,7 +30,7 @@ var reservedWords = {
 
 // And the keywords
 
-var isKeyword$1 = makePredicate("break case catch continue debugger default do else finally for function if return switch throw try var while with null true false instanceof typeof void delete new in this let const class extends export import yield super");
+var isKeyword = makePredicate("break case catch continue debugger default do else finally for function if return switch throw try var while with null true false instanceof typeof void delete new in this let const class extends export import yield super");
 
 // ## Character categories
 
@@ -124,7 +124,71 @@ function getOptions(opts) {
   return options;
 }
 
-function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+
+
+
+
+
+
+
+
+
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
 
 // ## Token types
 
@@ -144,10 +208,16 @@ function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Co
 // to know when parsing a label, in order to allow or disallow
 // continue jumps to that label.
 
+var beforeExpr = true;
+var startsExpr = true;
+var isLoop = true;
+var isAssign = true;
+var prefix = true;
+var postfix = true;
+
 var TokenType = function TokenType(label) {
   var conf = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  _classCallCheck$2(this, TokenType);
+  classCallCheck(this, TokenType);
 
   this.label = label;
   this.keyword = conf.keyword;
@@ -162,39 +232,59 @@ var TokenType = function TokenType(label) {
   this.updateContext = null;
 };
 
-function binop(name, prec) {
-  return new TokenType(name, { beforeExpr: true, binop: prec });
-}
-var beforeExpr = { beforeExpr: true };
-var startsExpr = { startsExpr: true };
+var KeywordTokenType = function (_TokenType) {
+  inherits(KeywordTokenType, _TokenType);
+
+  function KeywordTokenType(name) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    classCallCheck(this, KeywordTokenType);
+
+    options.keyword = name;
+
+    return possibleConstructorReturn(this, _TokenType.call(this, name, options));
+  }
+
+  return KeywordTokenType;
+}(TokenType);
+
+var BinopTokenType = function (_TokenType2) {
+  inherits(BinopTokenType, _TokenType2);
+
+  function BinopTokenType(name, prec) {
+    classCallCheck(this, BinopTokenType);
+    return possibleConstructorReturn(this, _TokenType2.call(this, name, { beforeExpr: beforeExpr, binop: prec }));
+  }
+
+  return BinopTokenType;
+}(TokenType);
 
 var types = {
-  num: new TokenType("num", startsExpr),
-  regexp: new TokenType("regexp", startsExpr),
-  string: new TokenType("string", startsExpr),
-  name: new TokenType("name", startsExpr),
+  num: new TokenType("num", { startsExpr: startsExpr }),
+  regexp: new TokenType("regexp", { startsExpr: startsExpr }),
+  string: new TokenType("string", { startsExpr: startsExpr }),
+  name: new TokenType("name", { startsExpr: startsExpr }),
   eof: new TokenType("eof"),
 
   // Punctuation token types.
-  bracketL: new TokenType("[", { beforeExpr: true, startsExpr: true }),
+  bracketL: new TokenType("[", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
   bracketR: new TokenType("]"),
-  braceL: new TokenType("{", { beforeExpr: true, startsExpr: true }),
-  braceBarL: new TokenType("{|", { beforeExpr: true, startsExpr: true }),
+  braceL: new TokenType("{", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
+  braceBarL: new TokenType("{|", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
   braceR: new TokenType("}"),
   braceBarR: new TokenType("|}"),
-  parenL: new TokenType("(", { beforeExpr: true, startsExpr: true }),
+  parenL: new TokenType("(", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
   parenR: new TokenType(")"),
-  comma: new TokenType(",", beforeExpr),
-  semi: new TokenType(";", beforeExpr),
-  colon: new TokenType(":", beforeExpr),
-  doubleColon: new TokenType("::", beforeExpr),
+  comma: new TokenType(",", { beforeExpr: beforeExpr }),
+  semi: new TokenType(";", { beforeExpr: beforeExpr }),
+  colon: new TokenType(":", { beforeExpr: beforeExpr }),
+  doubleColon: new TokenType("::", { beforeExpr: beforeExpr }),
   dot: new TokenType("."),
-  question: new TokenType("?", beforeExpr),
-  arrow: new TokenType("=>", beforeExpr),
+  question: new TokenType("?", { beforeExpr: beforeExpr }),
+  arrow: new TokenType("=>", { beforeExpr: beforeExpr }),
   template: new TokenType("template"),
-  ellipsis: new TokenType("...", beforeExpr),
-  backQuote: new TokenType("`", startsExpr),
-  dollarBraceL: new TokenType("${", { beforeExpr: true, startsExpr: true }),
+  ellipsis: new TokenType("...", { beforeExpr: beforeExpr }),
+  backQuote: new TokenType("`", { startsExpr: startsExpr }),
+  dollarBraceL: new TokenType("${", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
   at: new TokenType("@"),
 
   // Operators. These carry several kinds of properties to help the
@@ -211,74 +301,69 @@ var types = {
   // binary operators with a very low precedence, that should result
   // in AssignmentExpression nodes.
 
-  eq: new TokenType("=", { beforeExpr: true, isAssign: true }),
-  assign: new TokenType("_=", { beforeExpr: true, isAssign: true }),
-  incDec: new TokenType("++/--", { prefix: true, postfix: true, startsExpr: true }),
-  prefix: new TokenType("prefix", { beforeExpr: true, prefix: true, startsExpr: true }),
-  logicalOR: binop("||", 1),
-  logicalAND: binop("&&", 2),
-  bitwiseOR: binop("|", 3),
-  bitwiseXOR: binop("^", 4),
-  bitwiseAND: binop("&", 5),
-  equality: binop("==/!=", 6),
-  relational: binop("</>", 7),
-  bitShift: binop("<</>>", 8),
-  plusMin: new TokenType("+/-", { beforeExpr: true, binop: 9, prefix: true, startsExpr: true }),
-  modulo: binop("%", 10),
-  star: binop("*", 10),
-  slash: binop("/", 10),
-  exponent: new TokenType("**", { beforeExpr: true, binop: 11, rightAssociative: true })
+  eq: new TokenType("=", { beforeExpr: beforeExpr, isAssign: isAssign }),
+  assign: new TokenType("_=", { beforeExpr: beforeExpr, isAssign: isAssign }),
+  incDec: new TokenType("++/--", { prefix: prefix, postfix: postfix, startsExpr: startsExpr }),
+  prefix: new TokenType("prefix", { beforeExpr: beforeExpr, prefix: prefix, startsExpr: startsExpr }),
+  logicalOR: new BinopTokenType("||", 1),
+  logicalAND: new BinopTokenType("&&", 2),
+  bitwiseOR: new BinopTokenType("|", 3),
+  bitwiseXOR: new BinopTokenType("^", 4),
+  bitwiseAND: new BinopTokenType("&", 5),
+  equality: new BinopTokenType("==/!=", 6),
+  relational: new BinopTokenType("</>", 7),
+  bitShift: new BinopTokenType("<</>>", 8),
+  plusMin: new TokenType("+/-", { beforeExpr: beforeExpr, binop: 9, prefix: prefix, startsExpr: startsExpr }),
+  modulo: new BinopTokenType("%", 10),
+  star: new BinopTokenType("*", 10),
+  slash: new BinopTokenType("/", 10),
+  exponent: new TokenType("**", { beforeExpr: beforeExpr, binop: 11, rightAssociative: true })
+};
+
+var keywords = {
+  "break": new KeywordTokenType("break"),
+  "case": new KeywordTokenType("case", { beforeExpr: beforeExpr }),
+  "catch": new KeywordTokenType("catch"),
+  "continue": new KeywordTokenType("continue"),
+  "debugger": new KeywordTokenType("debugger"),
+  "default": new KeywordTokenType("default", { beforeExpr: beforeExpr }),
+  "do": new KeywordTokenType("do", { isLoop: isLoop, beforeExpr: beforeExpr }),
+  "else": new KeywordTokenType("else", { beforeExpr: beforeExpr }),
+  "finally": new KeywordTokenType("finally"),
+  "for": new KeywordTokenType("for", { isLoop: isLoop }),
+  "function": new KeywordTokenType("function", { startsExpr: startsExpr }),
+  "if": new KeywordTokenType("if"),
+  "return": new KeywordTokenType("return", { beforeExpr: beforeExpr }),
+  "switch": new KeywordTokenType("switch"),
+  "throw": new KeywordTokenType("throw", { beforeExpr: beforeExpr }),
+  "try": new KeywordTokenType("try"),
+  "var": new KeywordTokenType("var"),
+  "let": new KeywordTokenType("let"),
+  "const": new KeywordTokenType("const"),
+  "while": new KeywordTokenType("while", { isLoop: isLoop }),
+  "with": new KeywordTokenType("with"),
+  "new": new KeywordTokenType("new", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
+  "this": new KeywordTokenType("this", { startsExpr: startsExpr }),
+  "super": new KeywordTokenType("super", { startsExpr: startsExpr }),
+  "class": new KeywordTokenType("class"),
+  "extends": new KeywordTokenType("extends", { beforeExpr: beforeExpr }),
+  "export": new KeywordTokenType("export"),
+  "import": new KeywordTokenType("import"),
+  "yield": new KeywordTokenType("yield", { beforeExpr: beforeExpr, startsExpr: startsExpr }),
+  "null": new KeywordTokenType("null", { startsExpr: startsExpr }),
+  "true": new KeywordTokenType("true", { startsExpr: startsExpr }),
+  "false": new KeywordTokenType("false", { startsExpr: startsExpr }),
+  "in": new KeywordTokenType("in", { beforeExpr: beforeExpr, binop: 7 }),
+  "instanceof": new KeywordTokenType("instanceof", { beforeExpr: beforeExpr, binop: 7 }),
+  "typeof": new KeywordTokenType("typeof", { beforeExpr: beforeExpr, prefix: prefix, startsExpr: startsExpr }),
+  "void": new KeywordTokenType("void", { beforeExpr: beforeExpr, prefix: prefix, startsExpr: startsExpr }),
+  "delete": new KeywordTokenType("delete", { beforeExpr: beforeExpr, prefix: prefix, startsExpr: startsExpr })
 };
 
 // Map keyword names to token types.
-
-var keywords = {};
-
-// Succinct definitions of keyword token types
-function kw(name) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  options.keyword = name;
-  keywords[name] = types["_" + name] = new TokenType(name, options);
-}
-
-kw("break");
-kw("case", beforeExpr);
-kw("catch");
-kw("continue");
-kw("debugger");
-kw("default", beforeExpr);
-kw("do", { isLoop: true, beforeExpr: true });
-kw("else", beforeExpr);
-kw("finally");
-kw("for", { isLoop: true });
-kw("function", startsExpr);
-kw("if");
-kw("return", beforeExpr);
-kw("switch");
-kw("throw", beforeExpr);
-kw("try");
-kw("var");
-kw("let");
-kw("const");
-kw("while", { isLoop: true });
-kw("with");
-kw("new", { beforeExpr: true, startsExpr: true });
-kw("this", startsExpr);
-kw("super", startsExpr);
-kw("class");
-kw("extends", beforeExpr);
-kw("export");
-kw("import");
-kw("yield", { beforeExpr: true, startsExpr: true });
-kw("null", startsExpr);
-kw("true", startsExpr);
-kw("false", startsExpr);
-kw("in", { beforeExpr: true, binop: 7 });
-kw("instanceof", { beforeExpr: true, binop: 7 });
-kw("typeof", { beforeExpr: true, prefix: true, startsExpr: true });
-kw("void", { beforeExpr: true, prefix: true, startsExpr: true });
-kw("delete", { beforeExpr: true, prefix: true, startsExpr: true });
+Object.keys(keywords).forEach(function (name) {
+  types["_" + name] = keywords[name];
+});
 
 // Matches a whole line break (where CRLF is considered a single
 // line break). Used to count lines.
@@ -292,14 +377,12 @@ function isNewLine(code) {
 
 var nonASCIIwhitespace = /[\u1680\u180e\u2000-\u200a\u202f\u205f\u3000\ufeff]/;
 
-function _classCallCheck$3(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 // The algorithm used to determine whether a regexp can appear at a
 // given point in the program is loosely based on sweet.js' approach.
 // See https://github.com/mozilla/sweet.js/wiki/design
 
 var TokContext = function TokContext(token, isExpr, preserveSpace, override) {
-  _classCallCheck$3(this, TokContext);
+  classCallCheck(this, TokContext);
 
   this.token = token;
   this.isExpr = !!isExpr;
@@ -385,20 +468,18 @@ types.backQuote.updateContext = function () {
   this.state.exprAllowed = false;
 };
 
-function _classCallCheck$4(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 // These are used when `options.locations` is on, for the
 // `startLoc` and `endLoc` properties.
 
 var Position = function Position(line, col) {
-  _classCallCheck$4(this, Position);
+  classCallCheck(this, Position);
 
   this.line = line;
   this.column = col;
 };
 
 var SourceLocation = function SourceLocation(start, end) {
-  _classCallCheck$4(this, SourceLocation);
+  classCallCheck(this, SourceLocation);
 
   this.start = start;
   this.end = end;
@@ -423,11 +504,9 @@ function getLineInfo(input, offset) {
   }
 }
 
-function _classCallCheck$5(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var State = function () {
   function State() {
-    _classCallCheck$5(this, State);
+    classCallCheck(this, State);
   }
 
   State.prototype.init = function init(options, input) {
@@ -437,7 +516,7 @@ var State = function () {
 
     this.potentialArrowAt = -1;
 
-    this.inMethod = this.inFunction = this.inGenerator = this.inAsync = this.inType = this.noAnonFunctionType = false;
+    this.inMethod = this.inFunction = this.inGenerator = this.inAsync = this.inPropertyName = this.inType = this.noAnonFunctionType = false;
 
     this.labels = [];
 
@@ -558,8 +637,6 @@ var State = function () {
   return State;
 }();
 
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 /* eslint indent: 0 */
 
 // Object type used to represent tokens. Note that normally, tokens
@@ -567,7 +644,7 @@ function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Co
 // used for the onToken callback and the external tokenizer.
 
 var Token = function Token(state) {
-  _classCallCheck$1(this, Token);
+  classCallCheck(this, Token);
 
   this.type = state.type;
   this.value = state.value;
@@ -589,7 +666,7 @@ function codePointToString(code) {
 
 var Tokenizer = function () {
   function Tokenizer(options, input) {
-    _classCallCheck$1(this, Tokenizer);
+    classCallCheck(this, Tokenizer);
 
     this.state = new State();
     this.state.init(options, input);
@@ -628,8 +705,8 @@ var Tokenizer = function () {
 
   // TODO
 
-  Tokenizer.prototype.isKeyword = function isKeyword(word) {
-    return isKeyword$1(word);
+  Tokenizer.prototype.isKeyword = function isKeyword$$1(word) {
+    return isKeyword(word);
   };
 
   // TODO
@@ -721,8 +798,8 @@ var Tokenizer = function () {
 
   Tokenizer.prototype.skipBlockComment = function skipBlockComment() {
     var startLoc = this.state.curPosition();
-    var start = this.state.pos,
-        end = this.input.indexOf("*/", this.state.pos += 2);
+    var start = this.state.pos;
+    var end = this.input.indexOf("*/", this.state.pos += 2);
     if (end === -1) this.raise(this.state.pos - 2, "Unterminated comment");
 
     this.state.pos = end + 2;
@@ -1072,9 +1149,9 @@ var Tokenizer = function () {
   };
 
   Tokenizer.prototype.readRegexp = function readRegexp() {
+    var start = this.state.pos;
     var escaped = void 0,
-        inClass = void 0,
-        start = this.state.pos;
+        inClass = void 0;
     for (;;) {
       if (this.state.pos >= this.input.length) this.raise(start, "Unterminated regular expression");
       var ch = this.input.charAt(this.state.pos);
@@ -1115,11 +1192,12 @@ var Tokenizer = function () {
   // will return `null` unless the integer has exactly `len` digits.
 
   Tokenizer.prototype.readInt = function readInt(radix, len) {
-    var start = this.state.pos,
-        total = 0;
+    var start = this.state.pos;
+    var total = 0;
+
     for (var i = 0, e = len == null ? Infinity : len; i < e; ++i) {
-      var code = this.input.charCodeAt(this.state.pos),
-          val = void 0;
+      var code = this.input.charCodeAt(this.state.pos);
+      var val = void 0;
       if (code >= 97) {
         val = code - 97 + 10; // a
       } else if (code >= 65) {
@@ -1149,9 +1227,10 @@ var Tokenizer = function () {
   // Read an integer, octal integer, or floating-point number.
 
   Tokenizer.prototype.readNumber = function readNumber(startsWithDot) {
-    var start = this.state.pos,
-        isFloat = false,
-        octal = this.input.charCodeAt(this.state.pos) === 48;
+    var start = this.state.pos;
+    var octal = this.input.charCodeAt(this.state.pos) === 48;
+    var isFloat = false;
+
     if (!startsWithDot && this.readInt(10) === null) this.raise(start, "Invalid number");
     var next = this.input.charCodeAt(this.state.pos);
     if (next === 46) {
@@ -1170,8 +1249,8 @@ var Tokenizer = function () {
     }
     if (isIdentifierStart(this.fullCharCodeAtPos())) this.raise(this.state.pos, "Identifier directly after number");
 
-    var str = this.input.slice(start, this.state.pos),
-        val = void 0;
+    var str = this.input.slice(start, this.state.pos);
+    var val = void 0;
     if (isFloat) {
       val = parseFloat(str);
     } else if (!octal || str.length === 1) {
@@ -1187,8 +1266,8 @@ var Tokenizer = function () {
   // Read a string value, interpreting backslash-escapes.
 
   Tokenizer.prototype.readCodePoint = function readCodePoint() {
-    var ch = this.input.charCodeAt(this.state.pos),
-        code = void 0;
+    var ch = this.input.charCodeAt(this.state.pos);
+    var code = void 0;
 
     if (ch === 123) {
       var codePos = ++this.state.pos;
@@ -1412,8 +1491,9 @@ var Tokenizer = function () {
   };
 
   Tokenizer.prototype.updateContext = function updateContext(prevType) {
-    var update = void 0,
-        type = this.state.type;
+    var type = this.state.type;
+    var update = void 0;
+
     if (type.keyword && prevType === types.dot) {
       this.state.exprAllowed = false;
     } else if (update = type.updateContext) {
@@ -1426,23 +1506,18 @@ var Tokenizer = function () {
   return Tokenizer;
 }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var plugins = {};
+var frozenDeprecatedWildcardPluginList = ["jsx", "doExpressions", "objectRestSpread", "decorators", "classProperties", "exportExtensions", "asyncGenerators", "functionBind", "functionSent", "dynamicImport", "flow"];
 
 var Parser = function (_Tokenizer) {
-  _inherits(Parser, _Tokenizer);
+  inherits(Parser, _Tokenizer);
 
   function Parser(options, input) {
-    _classCallCheck(this, Parser);
+    classCallCheck(this, Parser);
 
     options = getOptions(options);
 
-    var _this = _possibleConstructorReturn(this, _Tokenizer.call(this, options, input));
+    var _this = possibleConstructorReturn(this, _Tokenizer.call(this, options, input));
 
     _this.options = options;
     _this.inModule = _this.options.sourceType === "module";
@@ -1466,7 +1541,11 @@ var Parser = function (_Tokenizer) {
   };
 
   Parser.prototype.hasPlugin = function hasPlugin(name) {
-    return !!(this.plugins["*"] || this.plugins[name]);
+    if (this.plugins["*"] && frozenDeprecatedWildcardPluginList.indexOf(name) > -1) {
+      return true;
+    }
+
+    return !!this.plugins[name];
   };
 
   Parser.prototype.extend = function extend(name, f) {
@@ -1489,6 +1568,7 @@ var Parser = function (_Tokenizer) {
   };
 
   Parser.prototype.loadPlugins = function loadPlugins(pluginList) {
+    // TODO: Deprecate "*" option in next major version of Babylon
     if (pluginList.indexOf("*") >= 0) {
       this.loadAllPlugins();
 
@@ -1539,8 +1619,6 @@ var Parser = function (_Tokenizer) {
 
   return Parser;
 }(Tokenizer);
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var pp = Parser.prototype;
 
@@ -1685,8 +1763,8 @@ pp$1.parseStatement = function (declaration, topLevel) {
     this.parseDecorators(true);
   }
 
-  var starttype = this.state.type,
-      node = this.startNode();
+  var starttype = this.state.type;
+  var node = this.startNode();
 
   // Most types of statements are recognized by the keyword they
   // start with. Many are trivial to parse, some require a bit of
@@ -1789,7 +1867,8 @@ pp$1.takeDecorators = function (node) {
 
 pp$1.parseDecorators = function (allowExport) {
   while (this.match(types.at)) {
-    this.state.decorators.push(this.parseDecorator());
+    var decorator = this.parseDecorator();
+    this.state.decorators.push(decorator);
   }
 
   if (allowExport && this.match(types._export)) {
@@ -1882,8 +1961,8 @@ pp$1.parseForStatement = function (node) {
   }
 
   if (this.match(types._var) || this.match(types._let) || this.match(types._const)) {
-    var _init = this.startNode(),
-        varKind = this.state.type;
+    var _init = this.startNode();
+    var varKind = this.state.type;
     this.next();
     this.parseVar(_init, true, varKind);
     this.finishNode(_init, "VariableDeclaration");
@@ -2495,7 +2574,7 @@ pp$1.parseExport = function (node) {
     if (needsSemi) this.semicolon();
     this.checkExport(node, true, true);
     return this.finishNode(node, "ExportDefaultDeclaration");
-  } else if (this.state.type.keyword || this.shouldParseExportDeclaration()) {
+  } else if (this.shouldParseExportDeclaration()) {
     node.specifiers = [];
     node.source = null;
     node.declaration = this.parseExportDeclaration(node);
@@ -2548,7 +2627,7 @@ pp$1.parseExportFrom = function (node, expect) {
 };
 
 pp$1.shouldParseExportDeclaration = function () {
-  return this.isContextual("async");
+  return this.state.type.keyword === "var" || this.state.type.keyword === "const" || this.state.type.keyword === "let" || this.state.type.keyword === "function" || this.state.type.keyword === "class" || this.isContextual("async");
 };
 
 pp$1.checkExport = function (node, checkNames, isDefault) {
@@ -2726,8 +2805,8 @@ pp$1.parseImportSpecifiers = function (node) {
   var first = true;
   if (this.match(types.name)) {
     // import defaultObj, { x, y as z } from '...'
-    var startPos = this.state.start,
-        startLoc = this.state.startLoc;
+    var startPos = this.state.start;
+    var startLoc = this.state.startLoc;
     node.specifiers.push(this.parseImportSpecifierDefault(this.parseIdentifier(), startPos, startLoc));
     if (!this.eat(types.comma)) return;
   }
@@ -2751,12 +2830,16 @@ pp$1.parseImportSpecifiers = function (node) {
       if (this.eat(types.braceR)) break;
     }
 
-    var _specifier3 = this.startNode();
-    _specifier3.imported = this.parseIdentifier(true);
-    _specifier3.local = this.eatContextual("as") ? this.parseIdentifier() : _specifier3.imported.__clone();
-    this.checkLVal(_specifier3.local, true, undefined, "import specifier");
-    node.specifiers.push(this.finishNode(_specifier3, "ImportSpecifier"));
+    this.parseImportSpecifier(node);
   }
+};
+
+pp$1.parseImportSpecifier = function (node) {
+  var specifier = this.startNode();
+  specifier.imported = this.parseIdentifier(true);
+  specifier.local = this.eatContextual("as") ? this.parseIdentifier() : specifier.imported.__clone();
+  this.checkLVal(specifier.local, true, undefined, "import specifier");
+  node.specifiers.push(this.finishNode(specifier, "ImportSpecifier"));
 };
 
 pp$1.parseImportSpecifierDefault = function (id, startPos, startLoc) {
@@ -3138,8 +3221,8 @@ pp$3.checkPropClash = function (prop, propHash) {
 // delayed syntax error at correct position).
 
 pp$3.parseExpression = function (noIn, refShorthandDefaultPos) {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var expr = this.parseMaybeAssign(noIn, refShorthandDefaultPos);
   if (this.match(types.comma)) {
     var node = this.startNodeAt(startPos, startLoc);
@@ -3213,8 +3296,8 @@ pp$3.parseMaybeAssign = function (noIn, refShorthandDefaultPos, afterLeftParse, 
 // Parse a ternary conditional (`?:`) operator.
 
 pp$3.parseMaybeConditional = function (noIn, refShorthandDefaultPos, refNeedsArrowPos) {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var expr = this.parseExprOps(noIn, refShorthandDefaultPos);
   if (refShorthandDefaultPos && refShorthandDefaultPos.start) return expr;
 
@@ -3236,8 +3319,8 @@ pp$3.parseConditional = function (expr, noIn, startPos, startLoc) {
 // Start the precedence parser.
 
 pp$3.parseExprOps = function (noIn, refShorthandDefaultPos) {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var expr = this.parseMaybeUnary(refShorthandDefaultPos);
   if (refShorthandDefaultPos && refShorthandDefaultPos.start) {
     return expr;
@@ -3306,8 +3389,8 @@ pp$3.parseMaybeUnary = function (refShorthandDefaultPos) {
     return this.finishNode(node, update ? "UpdateExpression" : "UnaryExpression");
   }
 
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var expr = this.parseExprSubscripts(refShorthandDefaultPos);
   if (refShorthandDefaultPos && refShorthandDefaultPos.start) return expr;
   while (this.state.type.postfix && !this.canInsertSemicolon()) {
@@ -3325,8 +3408,8 @@ pp$3.parseMaybeUnary = function (refShorthandDefaultPos) {
 // Parse call, dot, and `[]`-subscript expressions.
 
 pp$3.parseExprSubscripts = function (refShorthandDefaultPos) {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var potentialArrowAt = this.state.potentialArrowAt;
   var expr = this.parseExprAtom(refShorthandDefaultPos);
 
@@ -3390,10 +3473,10 @@ pp$3.parseSubscripts = function (base, startPos, startLoc, noCalls) {
 };
 
 pp$3.parseCallExpressionArguments = function (close, possibleAsyncArrow) {
+  var elts = [];
   var innerParenStart = void 0;
+  var first = true;
 
-  var elts = [],
-      first = true;
   while (!this.eat(close)) {
     if (first) {
       first = false;
@@ -3430,8 +3513,8 @@ pp$3.parseAsyncArrowFromCallExpression = function (node, call) {
 // Parse a no-call expression (like argument of `new` or `::` operators).
 
 pp$3.parseNoCallExpr = function () {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   return this.parseSubscripts(this.parseExprAtom(), startPos, startLoc, true);
 };
 
@@ -3441,8 +3524,9 @@ pp$3.parseNoCallExpr = function () {
 // or `{}`.
 
 pp$3.parseExprAtom = function (refShorthandDefaultPos) {
-  var node = void 0,
-      canBeArrow = this.state.potentialArrowAt === this.state.start;
+  var canBeArrow = this.state.potentialArrowAt === this.state.start;
+  var node = void 0;
+
   switch (this.state.type) {
     case types._super:
       if (!this.state.inMethod && !this.options.allowSuperOutsideMethod) {
@@ -3631,14 +3715,15 @@ pp$3.parseParenAndDistinguishExpression = function (startPos, startLoc, canBeArr
   var val = void 0;
   this.expect(types.parenL);
 
-  var innerStartPos = this.state.start,
-      innerStartLoc = this.state.startLoc;
-  var exprList = [],
-      first = true;
-  var refShorthandDefaultPos = { start: 0 },
-      spreadStart = void 0,
-      optionalCommaStart = void 0;
+  var innerStartPos = this.state.start;
+  var innerStartLoc = this.state.startLoc;
+  var exprList = [];
+  var refShorthandDefaultPos = { start: 0 };
   var refNeedsArrowPos = { start: 0 };
+  var first = true;
+  var spreadStart = void 0;
+  var optionalCommaStart = void 0;
+
   while (!this.match(types.parenR)) {
     if (first) {
       first = false;
@@ -3651,8 +3736,8 @@ pp$3.parseParenAndDistinguishExpression = function (startPos, startLoc, canBeArr
     }
 
     if (this.match(types.ellipsis)) {
-      var spreadNodeStartPos = this.state.start,
-          spreadNodeStartLoc = this.state.startLoc;
+      var spreadNodeStartPos = this.state.start;
+      var spreadNodeStartLoc = this.state.startLoc;
       spreadStart = this.state.start;
       exprList.push(this.parseParenItem(this.parseRest(), spreadNodeStartLoc, spreadNodeStartPos));
       break;
@@ -3939,11 +4024,14 @@ pp$3.parsePropertyName = function (prop) {
     prop.computed = true;
     prop.key = this.parseMaybeAssign();
     this.expect(types.bracketR);
-    return prop.key;
   } else {
     prop.computed = false;
-    return prop.key = this.match(types.num) || this.match(types.string) ? this.parseExprAtom() : this.parseIdentifier(true);
+    var oldInPropertyName = this.state.inPropertyName;
+    this.state.inPropertyName = true;
+    prop.key = this.match(types.num) || this.match(types.string) ? this.parseExprAtom() : this.parseIdentifier(true);
+    this.state.inPropertyName = oldInPropertyName;
   }
+  return prop.key;
 };
 
 // Initialize empty function node.
@@ -3991,9 +4079,9 @@ pp$3.parseFunctionBody = function (node, allowExpression) {
   } else {
     // Start a new scope with regard to labels and the `inFunction`
     // flag (restore them to their old value afterwards).
-    var oldInFunc = this.state.inFunction,
-        oldInGen = this.state.inGenerator,
-        oldLabels = this.state.labels;
+    var oldInFunc = this.state.inFunction;
+    var oldInGen = this.state.inGenerator;
+    var oldLabels = this.state.labels;
     this.state.inFunction = true;this.state.inGenerator = node.generator;this.state.labels = [];
     node.body = this.parseBlock(true);
     node.expression = false;
@@ -4076,8 +4164,9 @@ pp$3.parseFunctionBody = function (node, allowExpression) {
 // for array literals).
 
 pp$3.parseExprList = function (close, allowEmpty, refShorthandDefaultPos) {
-  var elts = [],
-      first = true;
+  var elts = [];
+  var first = true;
+
   while (!this.eat(close)) {
     if (first) {
       first = false;
@@ -4171,8 +4260,6 @@ pp$3.parseYield = function () {
   return this.finishNode(node, "YieldExpression");
 };
 
-function _classCallCheck$6(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 // Start an AST node, attaching a start offset.
 
 var pp$4 = Parser.prototype;
@@ -4180,7 +4267,7 @@ var commentKeys = ["leadingComments", "trailingComments", "innerComments"];
 
 var Node = function () {
   function Node(pos, loc, filename) {
-    _classCallCheck$6(this, Node);
+    classCallCheck(this, Node);
 
     this.type = "";
     this.start = pos;
@@ -4412,15 +4499,11 @@ pp$6.processComment = function (node) {
 
 var pp$7 = Parser.prototype;
 
-pp$7.flowParseTypeInitialiser = function (tok, allowLeadingPipeOrAnd) {
+pp$7.flowParseTypeInitialiser = function (tok) {
   var oldInType = this.state.inType;
   this.state.inType = true;
   this.expect(tok || types.colon);
-  if (allowLeadingPipeOrAnd) {
-    if (this.match(types.bitwiseAND) || this.match(types.bitwiseOR)) {
-      this.next();
-    }
-  }
+
   var type = this.flowParseType();
   this.state.inType = oldInType;
   return type;
@@ -4598,8 +4681,7 @@ pp$7.flowParseTypeAlias = function (node) {
     node.typeParameters = null;
   }
 
-  node.right = this.flowParseTypeInitialiser(types.eq,
-  /*allowLeadingPipeOrAnd*/true);
+  node.right = this.flowParseTypeInitialiser(types.eq);
   this.semicolon();
 
   return this.finishNode(node, "TypeAlias");
@@ -4653,8 +4735,8 @@ pp$7.flowParseTypeParameterDeclaration = function () {
 };
 
 pp$7.flowParseTypeParameterInstantiation = function () {
-  var node = this.startNode(),
-      oldInType = this.state.inType;
+  var node = this.startNode();
+  var oldInType = this.state.inType;
   node.params = [];
 
   this.state.inType = true;
@@ -4769,8 +4851,8 @@ pp$7.flowParseObjectType = function (allowStatic, allowExact) {
 
   while (!this.match(endDelim)) {
     var optional = false;
-    var startPos = this.state.start,
-        startLoc = this.state.startLoc;
+    var startPos = this.state.start;
+    var startLoc = this.state.startLoc;
     node = this.startNode();
     if (allowStatic && this.isContextual("static") && this.lookahead().type !== types.colon) {
       this.next();
@@ -4954,8 +5036,8 @@ pp$7.flowIdentToTypeAnnotation = function (startPos, startLoc, node, id) {
 // primary types are kind of like primary expressions...they're the
 // primitives with which other types are constructed.
 pp$7.flowParsePrimaryType = function () {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var node = this.startNode();
   var tmp = void 0;
   var type = void 0;
@@ -5132,6 +5214,7 @@ pp$7.flowParseAnonFunctionWithoutParens = function () {
 
 pp$7.flowParseIntersectionType = function () {
   var node = this.startNode();
+  this.eat(types.bitwiseAND);
   var type = this.flowParseAnonFunctionWithoutParens();
   node.types = [type];
   while (this.eat(types.bitwiseAND)) {
@@ -5142,6 +5225,7 @@ pp$7.flowParseIntersectionType = function () {
 
 pp$7.flowParseUnionType = function () {
   var node = this.startNode();
+  this.eat(types.bitwiseOR);
   var type = this.flowParseIntersectionType();
   node.types = [type];
   while (this.eat(types.bitwiseOR)) {
@@ -5347,17 +5431,6 @@ var flowPlugin = function (instance) {
       } else {
         return inner.call(this, name);
       }
-    };
-  });
-
-  // ensure that inside property names, < isn't interpreted as JSX, but as a type parameter
-  instance.extend("parsePropertyName", function (inner) {
-    return function (prop) {
-      var oldInType = this.state.inType;
-      this.state.inType = true;
-      var out = inner.call(this, prop);
-      this.state.inType = oldInType;
-      return out;
     };
   });
 
@@ -5589,6 +5662,52 @@ var flowPlugin = function (instance) {
     };
   });
 
+  // parse import-type/typeof shorthand
+  instance.extend("parseImportSpecifier", function () {
+    return function (node) {
+      var specifier = this.startNode();
+      var firstIdentLoc = this.state.start;
+      var firstIdent = this.parseIdentifier(true);
+
+      var specifierTypeKind = null;
+      if (firstIdent.name === "type") {
+        specifierTypeKind = "type";
+      } else if (firstIdent.name === "typeof") {
+        specifierTypeKind = "typeof";
+      }
+
+      if (this.isContextual("as")) {
+        var as_ident = this.parseIdentifier(true);
+        if (specifierTypeKind !== null && !this.match(types.name)) {
+          // `import {type as ,` or `import {type as }`
+          specifier.imported = as_ident;
+          specifier.importKind = specifierTypeKind;
+          specifier.local = as_ident.__clone();
+        } else {
+          // `import {type as foo`
+          specifier.imported = firstIdent;
+          specifier.importKind = null;
+          specifier.local = this.parseIdentifier(false);
+        }
+      } else if (specifierTypeKind !== null && this.match(types.name)) {
+        // `import {type foo`
+        specifier.imported = this.parseIdentifier(true);
+        specifier.importKind = specifierTypeKind;
+        specifier.local = this.eatContextual("as") ? this.parseIdentifier(false) : specifier.imported.__clone();
+      } else {
+        if (firstIdent.name === "typeof") {
+          this.unexpected(firstIdentLoc, "Cannot import a variable named `typeof`");
+        }
+        specifier.imported = firstIdent;
+        specifier.importKind = null;
+        specifier.local = specifier.imported.__clone();
+      }
+
+      this.checkLVal(specifier.local, true, undefined, "import specifier");
+      node.specifiers.push(this.finishNode(specifier, "ImportSpecifier"));
+    };
+  });
+
   // parse function type parameters - function foo<T>() {}
   instance.extend("parseFunctionParams", function (inner) {
     return function (node) {
@@ -5740,6 +5859,76 @@ var flowPlugin = function (instance) {
     };
   });
 };
+
+// Adapted from String.fromcodepoint to export the function without modifying String
+/*! https://mths.be/fromcodepoint v0.2.1 by @mathias */
+
+// The MIT License (MIT)
+// Copyright (c) Mathias Bynens
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the "Software"), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute,
+// sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or
+// substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+// NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var fromCodePoint = String.fromCodePoint;
+
+if (!fromCodePoint) {
+  (function () {
+    var stringFromCharCode = String.fromCharCode;
+    var floor = Math.floor;
+    fromCodePoint = function fromCodePoint() {
+      var MAX_SIZE = 0x4000;
+      var codeUnits = [];
+      var highSurrogate = void 0;
+      var lowSurrogate = void 0;
+      var index = -1;
+      var length = arguments.length;
+      if (!length) {
+        return "";
+      }
+      var result = "";
+      while (++index < length) {
+        var codePoint = Number(arguments[index]);
+        if (!isFinite(codePoint) || // `NaN`, `+Infinity`, or `-Infinity`
+        codePoint < 0 || // not a valid Unicode code point
+        codePoint > 0x10FFFF || // not a valid Unicode code point
+        floor(codePoint) != codePoint // not an integer
+        ) {
+            throw RangeError("Invalid code point: " + codePoint);
+          }
+        if (codePoint <= 0xFFFF) {
+          // BMP code point
+          codeUnits.push(codePoint);
+        } else {
+          // Astral code point; split in surrogate halves
+          // https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+          codePoint -= 0x10000;
+          highSurrogate = (codePoint >> 10) + 0xD800;
+          lowSurrogate = codePoint % 0x400 + 0xDC00;
+          codeUnits.push(highSurrogate, lowSurrogate);
+        }
+        if (index + 1 == length || codeUnits.length > MAX_SIZE) {
+          result += stringFromCharCode.apply(null, codeUnits);
+          codeUnits.length = 0;
+        }
+      }
+      return result;
+    };
+  })();
+}
+
+var fromCodePoint$1 = fromCodePoint;
 
 var XHTMLEntities = {
   quot: "\"",
@@ -6130,10 +6319,10 @@ pp$8.jsxReadEntity = function () {
       if (str[0] === "#") {
         if (str[1] === "x") {
           str = str.substr(2);
-          if (HEX_NUMBER.test(str)) entity = String.fromCharCode(parseInt(str, 16));
+          if (HEX_NUMBER.test(str)) entity = fromCodePoint$1(parseInt(str, 16));
         } else {
           str = str.substr(1);
-          if (DECIMAL_NUMBER.test(str)) entity = String.fromCharCode(parseInt(str, 10));
+          if (DECIMAL_NUMBER.test(str)) entity = fromCodePoint$1(parseInt(str, 10));
         }
       } else {
         entity = XHTMLEntities[str];
@@ -6199,8 +6388,8 @@ pp$8.jsxParseIdentifier = function () {
 // Parse namespaced identifier.
 
 pp$8.jsxParseNamespacedName = function () {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var name = this.jsxParseIdentifier();
   if (!this.eat(types.colon)) return name;
 
@@ -6214,8 +6403,8 @@ pp$8.jsxParseNamespacedName = function () {
 // or single identifier.
 
 pp$8.jsxParseElementName = function () {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   var node = this.jsxParseNamespacedName();
   while (this.eat(types.dot)) {
     var newNode = this.startNodeAt(startPos, startLoc);
@@ -6255,8 +6444,8 @@ pp$8.jsxParseAttributeValue = function () {
 // at the beginning of the next one (right brace).
 
 pp$8.jsxParseEmptyExpression = function () {
-  var node = this.startNodeAt(this.lastTokEnd, this.lastTokEndLoc);
-  return this.finishNodeAt(node, "JSXEmptyExpression", this.start, this.startLoc);
+  var node = this.startNodeAt(this.state.lastTokEnd, this.state.lastTokEndLoc);
+  return this.finishNodeAt(node, "JSXEmptyExpression", this.state.start, this.state.startLoc);
 };
 
 // Parse JSX spread child
@@ -6382,8 +6571,8 @@ pp$8.jsxParseElementAt = function (startPos, startLoc) {
 // Parses entire JSX element from current position.
 
 pp$8.jsxParseElement = function () {
-  var startPos = this.state.start,
-      startLoc = this.state.startLoc;
+  var startPos = this.state.start;
+  var startLoc = this.state.startLoc;
   this.next();
   return this.jsxParseElementAt(startPos, startLoc);
 };
@@ -6406,6 +6595,8 @@ var jsxPlugin = function (instance) {
 
   instance.extend("readToken", function (inner) {
     return function (code) {
+      if (this.state.inPropertyName) return inner.call(this, code);
+
       var context = this.curContext();
 
       if (context === types$1.j_expr) {
@@ -6462,9 +6653,9 @@ var jsxPlugin = function (instance) {
 plugins.flow = flowPlugin;
 plugins.jsx = jsxPlugin;
 
-function parse$1(input, options) {
+function parse(input, options) {
   return new Parser(options, input).parse();
 }
 
-exports.parse = parse$1;
+exports.parse = parse;
 exports.tokTypes = types;

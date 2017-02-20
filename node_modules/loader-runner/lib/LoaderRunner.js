@@ -39,6 +39,7 @@ function createLoaderObject(loader) {
 		path: null,
 		query: null,
 		options: null,
+		ident: null,
 		normal: null,
 		pitch: null,
 		raw: null,
@@ -57,21 +58,25 @@ function createLoaderObject(loader) {
 				obj.path = splittedRequest[0];
 				obj.query = splittedRequest[1];
 				obj.options = undefined;
+				obj.ident = undefined;
 			} else {
 				if(!value.loader)
-					throw new Error("request should be a string or object with loader and object (" + JSON.stringify(value) + ")")
+					throw new Error("request should be a string or object with loader and object (" + JSON.stringify(value) + ")");
 				obj.path = value.loader;
 				obj.options = value.options;
+				obj.ident = value.ident;
 				if(obj.options === null)
 					obj.query = "";
 				else if(obj.options === undefined)
 					obj.query = "";
 				else if(typeof obj.options === "string")
 					obj.query = "?" + obj.options;
+				else if(obj.ident)
+					obj.query = "??" + obj.ident;
 				else if(typeof obj.options === "object" && obj.options.ident)
 					obj.query = "??" + obj.options.ident;
 				else
-					obj.query = "?" + JSON.stringify(obj.options)
+					obj.query = "?" + JSON.stringify(obj.options);
 			}
 		}
 	});
@@ -144,7 +149,7 @@ function convertArgs(args, raw) {
 	if(!raw && Buffer.isBuffer(args[0]))
 		args[0] = utf8BufferToString(args[0]);
 	else if(raw && typeof args[0] === "string")
-		args[0] = new Buffer(args[0], "utf-8");
+		args[0] = new Buffer(args[0], "utf-8"); // eslint-disable-line
 }
 
 function iteratePitchingLoaders(options, loaderContext, callback) {
@@ -195,7 +200,7 @@ function processResource(options, loaderContext, callback) {
 			if(err) return callback(err);
 			options.resourceBuffer = buffer;
 			iterateNormalLoaders(options, loaderContext, [buffer], callback);
-		})
+		});
 	} else {
 		iterateNormalLoaders(options, loaderContext, [null], callback);
 	}
@@ -232,7 +237,7 @@ function iterateNormalLoaders(options, loaderContext, args, callback) {
 exports.getContext = function getContext(resource) {
 	var splitted = splitQuery(resource);
 	return dirname(splitted[0]);
-}
+};
 
 exports.runLoaders = function runLoaders(options, callback) {
 	// read options
@@ -289,7 +294,7 @@ exports.runLoaders = function runLoaders(options, callback) {
 		get: function() {
 			if(loaderContext.resourcePath === undefined)
 				return undefined;
-			return loaderContext.resourcePath + loaderContext.resourceQuery
+			return loaderContext.resourcePath + loaderContext.resourceQuery;
 		},
 		set: function(value) {
 			var splittedResource = value && splitQuery(value);

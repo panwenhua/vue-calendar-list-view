@@ -486,6 +486,9 @@ function genericPrintNoParens(path, options, print) {
     case "ExportDefaultSpecifier":
         return path.call(print, "exported");
 
+    case "Import":
+        return fromString("import", options);
+
     case "ImportDeclaration":
         parts.push("import ");
 
@@ -568,9 +571,11 @@ function genericPrintNoParens(path, options, print) {
 
         if (n.argument) {
             var argLines = path.call(print, "argument");
-            if (argLines.length > 1 &&
-                namedTypes.JSXElement &&
-                namedTypes.JSXElement.check(n.argument)) {
+            if (argLines.startsWithComment() ||
+                (argLines.length > 1 &&
+                    namedTypes.JSXElement &&
+                    namedTypes.JSXElement.check(n.argument)
+                )) {
                 parts.push(
                     " (\n",
                     argLines.indent(options.tabWidth),
@@ -1361,6 +1366,7 @@ function genericPrintNoParens(path, options, print) {
         ]);
 
     case "DeclareExportDeclaration":
+    case "DeclareExportAllDeclaration":
         return concat([
             "declare ",
             printExportDeclaration(path, options, print)

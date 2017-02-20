@@ -4,7 +4,7 @@
 // supports transition mode (out-in / in-out)
 
 import { warn } from 'core/util/index'
-import { camelize, extend } from 'shared/util'
+import { camelize, extend, isPrimitive } from 'shared/util'
 import { mergeVNodeHook, getFirstComponentChild } from 'core/vdom/helpers/index'
 
 export const transitionProps = {
@@ -15,10 +15,13 @@ export const transitionProps = {
   type: String,
   enterClass: String,
   leaveClass: String,
+  enterToClass: String,
+  leaveToClass: String,
   enterActiveClass: String,
   leaveActiveClass: String,
   appearClass: String,
-  appearActiveClass: String
+  appearActiveClass: String,
+  appearToClass: String
 }
 
 // in case the child is also an abstract component, e.g. <keep-alive>
@@ -62,10 +65,15 @@ function hasParentTransition (vnode) {
   }
 }
 
+function isSameChild (child, oldChild) {
+  return oldChild.key === child.key && oldChild.tag === child.tag
+}
+
 export default {
   name: 'transition',
   props: transitionProps,
   abstract: true,
+
   render (h: Function) {
     let children = this.$slots.default
     if (!children) {
@@ -119,9 +127,15 @@ export default {
       return placeholder(h, rawChild)
     }
 
-    const key = child.key = child.key == null || child.isStatic
-      ? `__v${child.tag + this._uid}__`
-      : child.key
+    // ensure a key that is unique to the vnode type and to this transition
+    // component instance. This key will be used to remove pending leaving nodes
+    // during entering.
+    const id = `__transition-${this._uid}-`
+    const key = child.key = child.key == null
+      ? id + child.tag
+      : isPrimitive(child.key)
+        ? (String(child.key).indexOf(id) === 0 ? child.key : id + child.key)
+        : child.key
     const data = (child.data || (child.data = {})).transition = extractTransitionData(this)
     const oldRawChild = this._vnode
     const oldChild: any = getRealChild(oldRawChild)
@@ -132,11 +146,10 @@ export default {
       child.data.show = true
     }
 
-    if (oldChild && oldChild.data && oldChild.key !== key) {
+    if (oldChild && oldChild.data && !isSameChild(child, oldChild)) {
       // replace old child transition data with fresh one
       // important for dynamic transitions!
-      const oldData = oldChild.data.transition = extend({}, data)
-
+      const oldData = oldChild && (oldChild.data.transition = extend({}, data))
       // handle transition mode
       if (mode === 'out-in') {
         // return placeholder node and queue update when leave finishes

@@ -107,13 +107,11 @@ require("babylon").parse("code", {
 
 ### Plugins
 
-> You can use `"*"` to include everything (may be useful in certain cases)
-
  - `jsx`
  - `flow`
  - `doExpressions`
  - `objectRestSpread`
- - `decorators`
+ - `decorators` (Based on an outdated version of the Decorators proposal. Will be removed in a future version of `Babylon`)
  - `classProperties`
  - `exportExtensions`
  - `asyncGenerators`

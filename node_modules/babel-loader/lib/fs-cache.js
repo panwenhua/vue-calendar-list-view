@@ -8,6 +8,7 @@ var os = require("os");
 var path = require("path");
 var zlib = require("zlib");
 
+var defaultCacheDirectory = null;
 var read = function read(filename, callback) {
   return fs.readFile(filename, function (err, data) {
     if (err) {
@@ -95,7 +96,10 @@ module.exports = function (params, callback) {
   if (typeof params.directory === "string") {
     directory = params.directory;
   } else {
-    directory = findCacheDir({ name: "babel-loader" }) || os.tmpdir();
+    if (defaultCacheDirectory === null) {
+      defaultCacheDirectory = findCacheDir({ name: "babel-loader" }) || os.tmpdir();
+    }
+    directory = defaultCacheDirectory;
   }
 
   handleCache(directory, params, callback);
