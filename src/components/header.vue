@@ -1,5 +1,5 @@
 <template>
-	<header v-if="getHeader" :class="opa==false?{white: true}:{black: true}">
+	<header :class="opa==false?{white: true}:{black: true}">
 		<a :class="getBackClass" v-if="backType" @click="aBtn()">
 		</a>
 		<span v-text="pageName"></span>
@@ -9,55 +9,32 @@
 </template>
 
 <script>
-	export default {
-		props: ['pageName', 'backAction', "backType", "goback", "clickBtn", "clickAction", "opa"],
-		computed: {
-			getBackClass: function() {
-				let back = {
-					back: true,
-					backWhite: false
-				};
-				if(this.opa == false) {
-					back['back'] = false;
-					back['backWhite'] = true;
-				}
-				return back;
-			},
-			getHeader: function() {
-				if(localStorage.android == "true") {
-					return false;
-				} else if(localStorage.ios == "true") {
-					return false;
-				} else {
-					return true;
-				}
+export default {
+	props: ['pageName', 'backAction', "backType", "goback", "clickBtn", "clickAction", "opa"],
+	computed: {
+		getBackClass() {
+			let back = {
+				back: true,
+				backWhite: false
+			};
+			if (this.opa == false) {
+				back['back'] = false;
+				back['backWhite'] = true;
 			}
-
+			return back;
 		},
-		methods: {
-			aBtn: function() {
-				if(this.backAction != undefined) {
-					this.backAction();
-				} else {
-					let _back = this.$route.query.backUrl
-					console.log(_back)
-					if(_back) {
-						this.$route.router.go({
-							path: _back,
-						});
-					} else {
-						history.go(-1);
-					}
-				}
+	},
+	methods: {
+		aBtn() {
+			if (this.backAction) {
+				this.backAction();
 			}
-		},
+		}
+	},
 
-	}
+}
 </script>
 <style lang="sass" scoped>
-	/*@import url("../assets/iconfonts/iconfont.css");*/
-	/*header*/
-	
 	.rightButton {
 		position: absolute;
 		right: 20px;

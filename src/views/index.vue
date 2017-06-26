@@ -8,7 +8,6 @@
 					<span class="item">出发日期</span>
 					<span class="result">{{getCurrentDate}}</span>
 					<span class="select">请选择></span>
-
 				</li>
 				<router-link tag="li" to="/travelInformation">
 					<span class="item">出行人数</span>
@@ -21,7 +20,9 @@
 					<span class="select">请选择></span>
 				</router-link>
 			</ul>
-			<div class="buttons"><button class="submitPlan">提交出行订单</button></div>
+			<div class="buttons">
+				<button class="submitPlan">提交出行订单</button>
+			</div>
 			<p class="tips2">说明：只有出行日期可点</p>
 		</section>
 		<div class="calendar" :style="{display: calendar.open?'block':'none'}" style="position: fixed; z-index: 999; bottom: 0px;">
@@ -33,89 +34,88 @@
 	</div>
 </template>
 <script>
-	export default {
-		data() {
-				return {
-					headTit: {
-						tab1: '选择出行日期',
-						back: 'ok',
-						right: '历史订单'
-					},
-					calendar: {
-						open: false,
-						aroud: 12, //12个月
-						nums: [{
-							"reTravelDate": "2016-12-27",
-							"availableAmount": 12
-						}, {
-							"reTravelDate": "2017-01-01",
-							"availableAmount": 13
-						}, {
-							"reTravelDate": "2017-01-02",
-							"availableAmount": 13
-						}, {
-							"reTravelDate": "2017-01-03",
-							"availableAmount": 13
-						}, {
-							"reTravelDate": "2017-02-02",
-							"availableAmount": 1
-						}]
-					},
-					currentDate: null,
-					pepoleNum: 10,
-					cardNum: 10
-				}
+export default {
+	data() {
+		return {
+			headTit: {
+				tab1: '选择出行日期',
+				back: 'ok',
+				right: '历史订单'
 			},
-			computed: {
-				getCardNum() {
-					return this.cardNum != null && this.cardNum + '张';
-				},
-				getPepoleNum() {
-					return this.pepoleNum != null && this.pepoleNum + '人';
-				},
-				getCurrentDate() {
-					let d = this.currentDate;
-					if(d) {
-						return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
-					} else {
-						let d = new Date();
-						return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
-					}
-				}
+			calendar: {
+				open: false,
+				aroud: 12, //12个月
+				nums: [{//对应日期的  人数
+					"reTravelDate": "2016-12-27",
+					"availableAmount": 12
+				}, {
+					"reTravelDate": "2017-01-01",
+					"availableAmount": 13
+				}, {
+					"reTravelDate": "2017-01-02",
+					"availableAmount": 13
+				}, {
+					"reTravelDate": "2017-01-03",
+					"availableAmount": 13
+				}, {
+					"reTravelDate": "2017-02-02",
+					"availableAmount": 1
+				}]
 			},
-			methods: {
-				clickRight() {
-					alert("历史订单")
-				},
-				openCalendar() {
-					this.getCalendarAndMum();
-					this.calendar.open = true;
-				},
-				closeCalendar() {
-					this.calendar.open = false;
-				},
-				formatDate(year, month, day) {
-					let y = year;
-					let m = month;
-					if(m < 10) m = "0" + m;
-					let d = day;
-					if(d < 10) d = "0" + d;
-					return y + "-" + m + "-" + d
-				},
-				setCurrentDate(d) {
-					this.currentDate = d;
-					this.closeCalendar();
-				},
-				getCalendarAndMum() {
-					//此处可以ajax 获取数据
-					let me = this;
-				}
-			},
-			components: {
-				"nvHead": require('../components/header.vue'),
-				"calendarEl": require('../components/calendar.vue'),
-			},
-	}
+			currentDate: null,//当前选择的日期
+			pepoleNum: 10,
+			cardNum: 10
+		}
+	},
+	computed: {
+		getCardNum() {
+			return this.cardNum && this.cardNum + '张';
+		},
+		getPepoleNum() {
+			return this.pepoleNum && this.pepoleNum + '人';
+		},
+		getCurrentDate() {
+			let d = this.currentDate;
+			if (d) {
+				return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
+			} else {
+				d = new Date();
+				return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
+			}
+		}
+	},
+	methods: {
+		clickRight() {
+			alert("历史订单")
+		},
+		openCalendar() {
+			this.getCalendarAndMum();
+			this.calendar.open = true;
+		},
+		closeCalendar() {
+			this.calendar.open = false;
+		},
+		formatDate(year, month, day) {
+			let y = year;
+			let m = month;
+			if (m < 10) m = "0" + m;
+			let d = day;
+			if (d < 10) d = "0" + d;
+			return y + "-" + m + "-" + d
+		},
+		setCurrentDate(d) {
+			this.currentDate = d;//
+			this.closeCalendar();
+		},
+		getCalendarAndMum() {
+			//此处可以获取数据  比如获取对应日期的人数
+		}
+	},
+	components: {
+		"nvHead": require('@/components/header.vue'),
+		"calendarEl": require('@/components/calendar.vue'),
+	},
+}
 </script>
 <style lang="sass" scoped>
 	.buttons {
