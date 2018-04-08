@@ -2,7 +2,6 @@
 
 > 基于vue2.X的选择出行日期的日历组件，带有价格，或者可出行人数显示。
 <br>
-> 如果想兼容vue1.X 请将`v-else-if` 换成代码块  改成`<templet v-if>`.... 
 <br>
 
 ## Build Setup
