@@ -1,6 +1,6 @@
 # vue-calendar-list-view
 
-react table component
+一个日历列表组件，类似各类旅游网站的出行日期选择控件。
 
 [![NPM version][npm-image]][npm-url]
 [![node version][node-image]][node-url]
