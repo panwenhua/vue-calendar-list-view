@@ -6,43 +6,44 @@
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
 }
+
 @mixin place($pos) {
     position: $pos;
 }
+
 @mixin radius($W) {
     border-radius: $W;
 }
+
 html,
 body {
     @include full;
 }
+
 html {
-    -ms-touch-action: none;
+    touch-action: none;
 }
+
 body {
     background: #f4f4f4;
 }
+
 #app {
     @include full;
-    &> div {
-        @include full;
-        display: box;
-        display: -webkit-box;
-        display: -moz-box;
-        box-orient: vertical;
-        -moz-box-orient: vertical;
-        -webkit-box-orient: vertical;
+    &>div {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 }
+
 /*section*/
+
 section {
-    width: 100%;
-    overflow-x: hidden;
     overflow-y: scroll;
-    box-flex: 1;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
+    flex: 1;
 }
+
 section::-webkit-scrollbar {
     display: none;
 }

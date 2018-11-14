@@ -1,14 +1,18 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <Examples/>
   </div>
 </template>
 
 <script>
-import  '@/assets/scss/common/common.scss';
+import "@/assets/scss/common/common.scss";
+import Examples from "@/views/index";
 export default {
-  name: 'app'
-}
+  name: "app",
+  components: {
+    Examples,
+  }
+};
 </script>
 
 <style>

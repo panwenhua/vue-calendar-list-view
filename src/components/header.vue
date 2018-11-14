@@ -34,7 +34,7 @@ export default {
 
 }
 </script>
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 	.rightButton {
 		position: absolute;
 		right: 20px;
