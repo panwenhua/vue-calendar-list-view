@@ -1,14 +1,17 @@
 {
   "name": "vue-calendar-list-view",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.0.1",
+  "author": "panwenhua",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build  --dest ./docs",
-    "build-bundle": "vue-cli-service build --target lib --name calendarListView ./src/components/index.js",
+    "build-bundle": "vue-cli-service build  --dest ./lib --target lib --name calendarListView ./src/components/index.js",
     "lint": "vue-cli-service lint"
   },
-  "main": "./dist/calendarListView.common.js",
+  "main": "./lib/calendarListView.common.js",
   "dependencies": {
     "vue": "^2.5.17"
   },
