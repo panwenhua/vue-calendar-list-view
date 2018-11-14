@@ -20,17 +20,17 @@
 							<div v-if="day.getMonth()+1 != date.m">
 								<span></span>
 							</div>
-							<div v-else-if="isToday(day)" @click="onSelect(day)" :class="{today: isCurrentDay(day)}">
+							<div v-else-if="isToday(day)" id="is-today" @click="onChange(day)" :class="{today: isCurrentDay(day)}">
 								<span>{{ '今天' }}</span>
-								<i>{{getNum(day)}}</i>
+								<i class="options">{{getNum(day).label}}</i>
 							</div>
 							<div v-else :class="{today: isCurrentDay(day)}">
 								<template v-if="day<new Date()">
 									<span class="disabled">{{ day.getDate() }}</span>
 								</template>
 								<template v-else>
-									<span @click="onSelect(day)">{{ day.getDate() }}</span>
-									<i class="options">{{getNum(day)}}</i>
+									<span @click="onChange(day)">{{ day.getDate() }}</span>
+									<i class="options">{{getNum(day).label}}</i>
 								</template>
 							</div>
 						</li>
@@ -65,7 +65,7 @@ export default {
       type: Array
     },
     value: {
-      type: Date
+      type: String
     }
   },
   created() {
@@ -83,9 +83,18 @@ export default {
     }
   },
   methods: {
+    onChange(date) {
+      let day = this.formatDate(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+      );
+      let num = this.getNum(date);
+      this.onSelect(day, num.value, num);
+    },
     // 根据day
     isCurrentDay(day) {
-      let d = this.value !== null ? this.value : new Date();
+      let d = this.value !== null ? new Date(this.value) : new Date();
       let result =
         day.getFullYear() == d.getFullYear() &&
         day.getMonth() == d.getMonth() &&
@@ -95,21 +104,18 @@ export default {
       return result;
     },
     getNum(date) {
-      let lastDay =
-        this.options.length &&
-        this.options[this.options.length - 1].reTravelDate;
       let day = this.formatDate(
         date.getFullYear(),
         date.getMonth() + 1,
         date.getDate()
       );
-      if (day > lastDay) {
-        //过期不展示
-        return "";
-      }
       let hasNumsDay = this.options.find(x => x.date === day);
       if (hasNumsDay) {
-        return hasNumsDay.value;
+        return hasNumsDay;
+      } else {
+        return {
+            label: "",
+          }
       }
     },
     isToday(day) {

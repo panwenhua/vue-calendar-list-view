@@ -47,28 +47,33 @@ export default {
         options: [
           {
             //对应日期的  人数
-            date: "2018-01-27",
-            value: "剩12人"
+            date: "2018-11-11",
+            label: "剩12人",
+            value: 12
           },
           {
-            date: "2018-01-28",
-            value: "剩13人"
+            date: "2018-11-12",
+            label: "剩13人",
+            value: 13
           },
           {
-            date: "2018-11-09",
-            value: "剩13人"
+            date: "2018-11-13",
+            label: "剩14人",
+            value: 14
           },
           {
-            date: "2018-11-10",
-            value: "剩13人"
+            date: "2018-11-14",
+            label: "剩15人",
+            value: 15
           },
           {
-            date: "2018-12-09",
-            value: "剩1人"
+            date: "2018-11-20",
+            label: "剩16人",
+            value: 16
           }
         ]
       },
-      currentDate: null, //当前选择的日期
+      currentDate: "2018-11-20", //当前选择的日期
       pepoleNum: 10,
       cardNum: 10
     };
@@ -83,7 +88,7 @@ export default {
     getCurrentDate() {
       let d = this.currentDate;
       if (d) {
-        return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
+        return d;
       } else {
         d = new Date();
         return this.formatDate(d.getFullYear(), d.getMonth() + 1, d.getDate());

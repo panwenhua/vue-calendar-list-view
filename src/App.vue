@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <Examples/>
+    <!-- <Examples/> -->
+    <Index />
   </div>
 </template>
 
 <script>
 import "@/assets/scss/common/common.scss";
-import Examples from "@/views/index";
+import Index from "@/views/index";
+import Examples from "@/views/example";
 export default {
   name: "app",
   components: {
-    Examples,
+    Index,
+    Examples
   }
 };
 </script>
