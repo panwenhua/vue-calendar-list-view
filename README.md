@@ -124,7 +124,6 @@ export default {
           <td>Object[]<Object></td>
           <th></th>
           <td>
-            The columns config of table. contains
             <table>
              <thead>
                 <tr>
