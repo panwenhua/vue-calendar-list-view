@@ -1,7 +1,7 @@
 <template>
 	<div class="calendar-list">
 		<ul class="week">
-			<li style="color: #CCCCCC;">日</li>
+			<li>日</li>
 			<li>一</li>
 			<li>二</li>
 			<li>三</li>
@@ -114,8 +114,8 @@ export default {
         return hasNumsDay;
       } else {
         return {
-            label: "",
-          }
+          label: ""
+        };
       }
     },
     isToday(day) {
@@ -191,88 +191,90 @@ export default {
 }
 
 .calendar-list {
-  background-color: #fff;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.calendar {
-  padding-top: 0.27rem;
-}
-
-.week {
-  position: fixed;
-  z-index: 50;
-  width: 100%;
-  background: #f9f8f8;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  li {
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    vertical-align: middle;
-    font-size: 25.7px;
-    /*px*/
-    font-weight: medium;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  .week {
+    width: 100%;
+    background: #f9f8f8;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    & > li {
+      &:first-child {
+        color: #ccc;
+      }
+      text-align: center;
+      height: 40px;
+      line-height: 40px;
+      vertical-align: middle;
+      font-size: 25.7px;
+      /*px*/
+      font-weight: medium;
+    }
   }
-}
-
-.calendar-item {
-  &:nth-of-type(1) {
-    margin-top: 40px;
-  }
-  padding-bottom: 0.1rem;
-  .calendar-header {
-    text-align: center;
-    font-size: 28px;
-    /*px*/
-    color: #333333;
-    font-weight: medium;
-    padding: 20px 0 10px 0;
-  }
-  .calendar-body {
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      li {
+  .calendar {
+    flex: 1;
+    padding-top: 30px;
+    overflow-y: auto;
+    .calendar-item {
+      &:nth-of-type(1) {
+        margin-top: 40px;
+      }
+      .calendar-header {
         text-align: center;
-        height: 86px;
-        vertical-align: middle;
-        border: none;
+        font-size: 28px;
+        /*px*/
+        color: #333333;
         font-weight: medium;
-        color: #797979;
-        width: 14.28%;
-        background-color: #fff;
-        position: relative;
-        div {
-          /*px*/
-          height: 86px;
-          span {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            font-size: 25.7px;
-            /*px*/
-            height: 46px;
-            line-height: 39.63px;
+        padding: 10px 0 30px 0;
+      }
+      .calendar-body {
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          li {
+            text-align: center;
+            height: 86px;
+            vertical-align: middle;
+            border: none;
+            font-weight: medium;
+            color: #797979;
+            width: 14.28%;
+            background-color: #fff;
+            position: relative;
+            div {
+              /*px*/
+              height: 86px;
+              span {
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                font-size: 25.7px;
+                /*px*/
+                height: 46px;
+                line-height: 39.63px;
+              }
+              i {
+                font-size: 18px;
+                /*px*/
+                display: block;
+                height: 40px;
+                line-height: 25px;
+              }
+              .options {
+                color: #37b7fa;
+              }
+            }
           }
-          i {
-            font-size: 18px;
-            /*px*/
-            display: block;
-            height: 40px;
-            line-height: 25px;
-          }
-          .options {
-            color: #37b7fa;
+          span[class="disabled"] {
+            color: #cccccc;
           }
         }
-      }
-      span[class="disabled"] {
-        color: #cccccc;
       }
     }
   }
