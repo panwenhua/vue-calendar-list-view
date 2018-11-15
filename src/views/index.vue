@@ -73,7 +73,7 @@ export default {
           }
         ]
       },
-      currentDate: "2018-11-20", //当前选择的日期
+      currentDate: null, //当前选择的日期
       pepoleNum: 10,
       cardNum: 10
     };
