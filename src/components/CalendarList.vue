@@ -21,7 +21,7 @@
 								<span></span>
 							</div>
 							<div v-else-if="isToday(day)" id="is-today" @click="onChange(day)" :class="{today: isCurrentDay(day)}">
-								<span>{{ '今天' }}</span>
+								<span>今天</span>
 								<i class="options">{{getNum(day).label}}</i>
 							</div>
 							<div v-else :class="{today: isCurrentDay(day)}">
