@@ -1,5 +1,5 @@
 language: node_js
-"os": "OSX",
+os: osx
 node_js:
   - "8"
 script: npm build
