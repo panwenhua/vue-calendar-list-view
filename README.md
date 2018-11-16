@@ -5,6 +5,7 @@
 [![NPM version][npm-image]][npm-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
+[![Build Status][build-image]][build-url]
 
 [npm-image]: http://img.shields.io/npm/v/vue-calendar-list-view.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/vue-calendar-list-view
@@ -12,6 +13,8 @@
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/vue-calendar-list-view.svg?style=flat-square
 [download-url]: https://npmjs.org/package/vue-calendar-list-view
+[build-image]: https://travis-ci.org/panwenhua/vue-calendar-list-view.svg?branch=master
+[build-url]:https://travis-ci.org/panwenhua/vue-calendar-list-view
 
 ## install
 
