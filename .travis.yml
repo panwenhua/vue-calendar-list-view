@@ -4,7 +4,6 @@ node_js:
   - "8"
 script: yarn build
 after_script:
-  - cd ./docs
   - git init
   - git config user.name "${U_NAME}"
   - git config user.email "${U_EMAIL}"
