@@ -32,7 +32,7 @@
 	</div>
 </template>
 <script>
-import Header from "../components/header.vue";
+import Header from "@/components/header.vue"; //这里有很奇怪的bug 在本机build的时候不报错，但是在travis上就会找到相关模块
 export default {
   data() {
     return {
