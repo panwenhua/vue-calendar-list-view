@@ -67,7 +67,7 @@ export default {
             value: 15
           },
           {
-            date: "2018-12-20",
+            date: "2018-12-21",
             label: "剩16人",
             value: 16
           }
